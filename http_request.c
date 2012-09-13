@@ -18,7 +18,6 @@ struct request_type_entry request_types[] =
     REQUEST_ENTRY(OPTIONS),
     REQUEST_ENTRY(CONNECT),
     REQUEST_ENTRY(PATCH),
-    REQUEST_ENTRY(INVALID)
 };
 
 #define INT_TO_PTR(n)   ((void *)(unsigned long)n)
@@ -28,7 +27,7 @@ enum request_type get_request_type(char *rq)
 {
     int i;
 
-    for (i = 0; i < sizeof(request_types) / sizeof(struct request_type_entry) - 1; i++)
+    for (i = 0; i < sizeof(request_types) / sizeof(struct request_type_entry); i++)
         if (!strcmp(rq, request_types[i].str))
             return request_types[i].request_type;
     
