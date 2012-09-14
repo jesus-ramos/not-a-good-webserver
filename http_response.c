@@ -15,3 +15,9 @@ char *request_status_text[] =
     [OK]              = "200 OK",
     [NOT_IMPLEMENTED] = "501 Not Implemented"
 };
+
+void send_response(struct http_request *http_req)
+{
+    if (!http_req)
+        return;
+}

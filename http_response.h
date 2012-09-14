@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "http_request.h"
+
 #define CRLF "\r\n"
 
 enum content_type
@@ -33,5 +35,7 @@ struct http_response
     enum request_status request_status;
     uint8_t *body;
 };
+
+void send_response(struct http_request *http_req);
 
 #endif /* _HTTP_RESPONSE_H */
