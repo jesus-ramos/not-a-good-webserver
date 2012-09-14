@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -17,14 +18,17 @@ int sgetline(int fd, char **line)
     if (!(buf = malloc(buf_size)))
         return -1;
 
-    do
+    while (1)
     {
         if ((ret = read(fd, &c, 1)) == -1)
             goto error;
 
+        if (!ret)
+            break;
+
         buf[bytes_read++] = c;
 
-        if (c == '\n')
+        if (c == '\n' || !c)
             break;
 
         if (bytes_read >= buf_size)
@@ -34,8 +38,12 @@ int sgetline(int fd, char **line)
                 goto error;
             buf = newbuf;
         }
-    } while (ret);
+    }
 
+    if (bytes_read == buf_size)
+        if (!(newbuf = realloc(buf, buf_size + 1)))
+            goto error;
+    buf[bytes_read] = '\0';
     *line = buf;
 
     return bytes_read;

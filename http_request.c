@@ -44,14 +44,14 @@ static void *handle_request(void *arg)
 
     request_fd = PTR_TO_INT(arg);
 
-    while (sgetline(request_fd, &line) != -1)
+    while (sgetline(request_fd, &line) > 0)
     {
-        printf("%s\n", line);
+        printf("%s", line);
         free(line);
     }
 
     close(request_fd);
-
+    
     return NULL;
 }
 

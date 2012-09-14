@@ -61,7 +61,7 @@ void process_requests()
     
     while (1)
     {
-        if ((request_fd = accept(listen_fd, (struct sockaddr *)NULL, NULL) == -1))
+        if ((request_fd = accept(listen_fd, (struct sockaddr *)NULL, NULL)) == -1)
         {
             perror("accept");
             continue;
