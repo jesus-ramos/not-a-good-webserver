@@ -18,7 +18,7 @@ int sgetline(int fd, char **line)
     if (!(buf = malloc(buf_size)))
         return -1;
 
-    while (1)
+    do
     {
         if ((ret = read(fd, &c, 1)) == -1)
             goto error;
@@ -28,9 +28,6 @@ int sgetline(int fd, char **line)
 
         buf[bytes_read++] = c;
 
-        if (c == '\n' || !c)
-            break;
-
         if (bytes_read >= buf_size)
         {
             buf_size += 128;
@@ -38,13 +35,15 @@ int sgetline(int fd, char **line)
                 goto error;
             buf = newbuf;
         }
-    }
+    } while (c && c != '\n');
 
-    if (bytes_read == buf_size)
-        if (!(newbuf = realloc(buf, buf_size + 1)))
-            goto error;
-    buf[bytes_read] = '\0';
-    *line = buf;
+    if (bytes_read)
+    {
+        buf[bytes_read] = '\0';
+        *line = buf;
+    }
+    else
+        free(buf);
 
     return bytes_read;
     
