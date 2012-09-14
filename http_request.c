@@ -1,9 +1,12 @@
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/socket.h>
 #include <unistd.h>
 
 #include "http_request.h"
+#include "socket_ops.h"
 
 #define REQUEST_ENTRY(req_type) { req_type, #req_type }
 
@@ -20,10 +23,7 @@ struct request_type_entry request_types[] =
     REQUEST_ENTRY(PATCH),
 };
 
-#define INT_TO_PTR(n)   ((void *)(unsigned long)n)
-#define PTR_TO_INT(ptr) ((int)(unsigned long)ptr)
-
-enum request_type get_request_type(char *rq)
+static enum request_type get_request_type(char *rq)
 {
     int i;
 
@@ -34,13 +34,21 @@ enum request_type get_request_type(char *rq)
     return INVALID;
 }
 
+#define INT_TO_PTR(n)   ((void *)(unsigned long)n)
+#define PTR_TO_INT(ptr) ((int)(unsigned long)ptr)
+
 static void *handle_request(void *arg)
 {
     int request_fd;
+    char *line;
 
     request_fd = PTR_TO_INT(arg);
 
-    printf("Got a request\n");
+    while (sgetline(request_fd, &line) != -1)
+    {
+        printf("%s\n", line);
+        free(line);
+    }
 
     close(request_fd);
 

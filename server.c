@@ -1,44 +1,71 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <unistd.h>
 
 #include "http_request.h"
 #include "server.h"
 
-struct server_settings
-{
-    int port;
-    int queue_length;
-};
+int port;
+int queue_length;
+int listen_fd;
 
-static struct server_settings server_settings;
-
-void init_server(int port, int queue_length)
+void server_exit()
 {
-    server_settings.port = port;
-    server_settings.queue_length = queue_length;
+    close(listen_fd);
+    
+    exit(0);
+}
+
+void init_server(int p, int queue_len)
+{
+    port = p;
+    queue_length = queue_len;
+    
+    signal(SIGTERM, server_exit);
+    signal(SIGABRT, server_exit);
+    signal(SIGINT, server_exit);
 }
 
 void process_requests()
 {
-    int listen_fd;
     int request_fd;
     struct sockaddr_in server_addr;
 
-    listen_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if ((listen_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    {
+        perror("socket");
+        return;
+    }
     memset(&server_addr, 0, sizeof(struct sockaddr_in));
 
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(server_settings.port);
+    server_addr.sin_port = htons(port);
     server_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
-    bind(listen_fd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr_in));
-    listen(listen_fd, server_settings.queue_length);
+    if (bind(listen_fd, (struct sockaddr *)&server_addr,
+             sizeof(struct sockaddr_in)) == -1)
+    {
+        perror("bind");
+        return;
+    }
+    if (listen(listen_fd, queue_length) == -1)
+    {
+        perror("listen");
+        return;
+    }
     
     while (1)
     {
-        request_fd = accept(listen_fd, (struct sockaddr *)NULL, NULL);
+        if ((request_fd = accept(listen_fd, (struct sockaddr *)NULL, NULL) == -1))
+        {
+            perror("accept");
+            continue;
+        }
         process_request(request_fd);
     }
 }
