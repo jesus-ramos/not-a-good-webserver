@@ -63,23 +63,11 @@ static int parse_header(struct http_request *http_req, char *line)
 static struct http_request *parse_request(int request_fd)
 {
     struct http_request *http_req;
-    char *line;
 
     if (!(http_req = calloc(sizeof(struct http_request), 1)))
         return NULL;
 
-    if (sgetline(request_fd, &line) < 1)
-        return NULL;
-    if (!parse_header(http_req, line))
-        goto parse_error;
-    free(line);
-
     return http_req;
-
-parse_error:
-    free(line);
-    free_http_request(http_req);
-    return NULL;
 }
 
 #define INT_TO_PTR(n)   ((void *)(unsigned long)n)
@@ -91,11 +79,13 @@ static void *handle_request(void *arg)
     struct http_request *http_req;
 
     request_fd = PTR_TO_INT(arg);
-    http_req = parse_request(request_fd);
-    send_response(http_req);
+    if (!(http_req = parse_request(request_fd)))
+        goto out;
+    send_response(request_fd, http_req);
 
+    free_http_request(http_req);
+out:
     close(request_fd);
-
     return NULL;
 }
 

@@ -7,6 +7,8 @@
 
 #define CRLF "\r\n"
 
+#define HTTP_1_1 "HTTP 1.1"
+
 enum content_type
 {
     CT_HTML,
@@ -36,6 +38,6 @@ struct http_response
     uint8_t *body;
 };
 
-void send_response(struct http_request *http_req);
+void send_response(int request_fd, struct http_request *http_req);
 
 #endif /* _HTTP_RESPONSE_H */

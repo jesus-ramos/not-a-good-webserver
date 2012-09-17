@@ -16,7 +16,7 @@ char *request_status_text[] =
     [NOT_IMPLEMENTED] = "501 Not Implemented"
 };
 
-void send_response(struct http_request *http_req)
+void send_response(int request_fd, struct http_request *http_req)
 {
     if (!http_req)
         return;
