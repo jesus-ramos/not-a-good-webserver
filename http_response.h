@@ -20,8 +20,8 @@ enum content_type
 
 enum request_status
 {
-    NOT_FOUND,
     OK,
+    NOT_FOUND,
     NOT_IMPLEMENTED
 };
 

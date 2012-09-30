@@ -11,8 +11,8 @@ char *content_type_text[] =
 
 char *request_status_text[] =
 {
-    [NOT_FOUND]       = "404 Not Found",
     [OK]              = "200 OK",
+    [NOT_FOUND]       = "404 Not Found",
     [NOT_IMPLEMENTED] = "501 Not Implemented"
 };
 
