@@ -1,7 +1,7 @@
 CC 	= gcc
 LD	= gcc
-CFLAGS 	= -Wall -O3 -pthread -g
-LDFLAGS = -pthread
+CFLAGS 	= -Wall -O3
+LDLIBS	= -pthread
 TARGET 	= webserver
 SRCS 	= main.c server.c http_request.c http_response.c socket_ops.c buffer.c
 OBJS 	= ${SRCS:.c=.o}
@@ -13,7 +13,7 @@ DEPS 	= ${SRCS:.c=.d}
 all : $(TARGET)
 
 $(TARGET) : $(OBJS)
-	$(LD) $(LDFLAGS) -o $(TARGET) $(OBJS)
+	$(LD) -o $(TARGET) $(OBJS) $(LDLIBS)
 
 .c.o :
 	$(CC) $(CFLAGS) -c $<
