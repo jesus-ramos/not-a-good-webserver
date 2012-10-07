@@ -4,7 +4,7 @@
 
 #include "http_response.h"
 
-char *content_type_text[] =
+const char *content_type_text[] =
 {
     [CT_HTML]   = "text/html",
     [CT_JPEG]   = "image/jpeg",
@@ -13,7 +13,7 @@ char *content_type_text[] =
     [CT_STREAM] = "application/octet-stream"
 };
 
-char *request_status_text[] =
+const char *request_status_text[] =
 {
     [OK]              = "200 OK",
     [NOT_FOUND]       = "404 Not Found",

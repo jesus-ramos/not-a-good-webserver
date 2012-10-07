@@ -50,7 +50,7 @@ void process_requests()
     server_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
     if (bind(listen_fd, (struct sockaddr *)&server_addr,
-             sizeof(struct sockaddr_in)) == -1)
+	     sizeof(struct sockaddr_in)) == -1)
     {
         perror("bind");
         return;
