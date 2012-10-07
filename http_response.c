@@ -15,7 +15,7 @@ const char *content_type_text[] =
 
 const char *request_status_text[] =
 {
-    [OK]              = "200 OK",
+    [OK]	      = "200 OK",
     [NOT_FOUND]       = "404 Not Found",
     [NOT_IMPLEMENTED] = "501 Not Implemented"
 };
@@ -28,9 +28,9 @@ void send_response(int request_fd, struct http_request *http_req)
 	"<head><title>WebServer Feature Not Implemented</title></head>"
 	"<body>This web server does not support the requested feature</body>"
 	"</html>";
-    
+
     if (!http_req)
-        return;
+	return;
 
     write(request_fd, status_line, sizeof(status_line) - 1);
     write(request_fd, content_type_line, sizeof(content_type_line) - 1);

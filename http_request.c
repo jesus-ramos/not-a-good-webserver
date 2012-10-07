@@ -32,9 +32,9 @@ static enum request_type get_request_type(char *rq)
 {
     int i;
 
-    for (i = 0; i < sizeof(request_types) / sizeof(struct request_type_entry); i++)
-        if (!strcmp(rq, request_types[i].str))
-            return request_types[i].request_type;
+    for (i = 0; i < ARRAY_SIZE(request_types); i++)
+	if (!strcmp(rq, request_types[i].str))
+	    return request_types[i].request_type;
 
     return INVALID;
 }
@@ -42,26 +42,9 @@ static enum request_type get_request_type(char *rq)
 static void free_http_request(struct http_request *http_req)
 {
     if (http_req->file_name)
-        free(http_req->file_name);
+	free(http_req->file_name);
 
     free(http_req);
-}
-
-static int parse_header(struct http_request *http_req, char *line)
-{
-    char *tok;
-    int len;
-
-    if (!(tok = strtok(line, " ")))
-        return 0;
-    http_req->request_type = get_request_type(tok);
-    if (!(tok = strtok(NULL, " ")))
-        return 0;
-    len = strlen(tok);
-    http_req->file_name = malloc(len + 1);
-    strcpy(http_req->file_name, tok);
-
-    return 1;
 }
 
 static int read_request_from_socket(int request_fd, struct buffer *buf)
@@ -80,18 +63,19 @@ static int read_request_from_socket(int request_fd, struct buffer *buf)
 
     do
     {
-        if ((ret = select(request_fd + 1, &rfds, NULL, NULL, &tv)) == -1)
-            return 0;
-        if (!ret)
-            return 1;
+	if ((ret = select(request_fd + 1, &rfds, NULL, NULL, &tv)) == -1)
+	    return 0;
+	if (!ret)
+	    return 1;
 	if ((bytes_read = read(request_fd, mini_buf, 128)) == -1)
 	    return 0;
 	if (!buffer_append(buf, mini_buf, bytes_read))
 	    return 0;
-	if (buf->len >= 4 && !strncmp((const char *)&buf->data[buf->len - 4], EOR, 4))
+	if (buf->len >= 4 && !strncmp((const char *)&buf->data[buf->len - 4],
+				      EOR, 4))
 	    return 1;
     } while (bytes_read);
-    
+
     return 1;
 }
 
@@ -101,7 +85,7 @@ static struct http_request *parse_request(int request_fd)
     struct buffer buf;
 
     if (!(http_req = calloc(sizeof(struct http_request), 1)))
-        return NULL;
+	return NULL;
     init_buffer(&buf);
     if (!read_request_from_socket(request_fd, &buf))
 	goto error;
@@ -126,12 +110,12 @@ static void *handle_request(void *arg)
 
     request_fd = PTR_TO_INT(arg);
     if (!(http_req = parse_request(request_fd)))
-        goto out;
+	goto out;
     send_response(request_fd, http_req);
     free_http_request(http_req);
 out:
     close(request_fd);
-    
+
     return NULL;
 }
 
@@ -139,7 +123,8 @@ void process_request(int request_fd)
 {
     pthread_t request_thread;
 
-    pthread_create(&request_thread, NULL, handle_request, INT_TO_PTR(request_fd));
+    pthread_create(&request_thread, NULL, handle_request,
+		   INT_TO_PTR(request_fd));
 }
 
 #undef INT_TO_PTR

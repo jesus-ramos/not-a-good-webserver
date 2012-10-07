@@ -25,7 +25,7 @@ void init_server(int p, int queue_len)
 {
     port = p;
     queue_length = queue_len;
-    
+
     signal(SIGTERM, server_exit);
     signal(SIGABRT, server_exit);
     signal(SIGINT, server_exit);
@@ -40,8 +40,8 @@ void process_requests()
 
     if ((listen_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
-        perror("socket");
-        return;
+	perror("socket");
+	return;
     }
     memset(&server_addr, 0, sizeof(struct sockaddr_in));
 
@@ -52,22 +52,23 @@ void process_requests()
     if (bind(listen_fd, (struct sockaddr *)&server_addr,
 	     sizeof(struct sockaddr_in)) == -1)
     {
-        perror("bind");
-        return;
+	perror("bind");
+	return;
     }
     if (listen(listen_fd, queue_length) == -1)
     {
-        perror("listen");
-        return;
+	perror("listen");
+	return;
     }
-    
+
     while (1)
     {
-        if ((request_fd = accept(listen_fd, (struct sockaddr *)NULL, NULL)) == -1)
-        {
-            perror("accept");
-            continue;
-        }
-        process_request(request_fd);
+	if ((request_fd = accept(listen_fd,
+				 (struct sockaddr *)NULL, NULL)) == -1)
+	{
+	    perror("accept");
+	    continue;
+	}
+	process_request(request_fd);
     }
 }

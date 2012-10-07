@@ -29,6 +29,8 @@ struct http_request
     char *file_name;
 };
 
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+
 void process_request(int request_fd);
 
 #endif /* _HTTP_REQUEST_H */
