@@ -6,6 +6,7 @@
 #include "http_request.h"
 
 #define CRLF "\r\n"
+#define EOR  "\r\n\r\n"
 
 #define HTTP_1_1 "HTTP 1.1"
 

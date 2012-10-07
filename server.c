@@ -16,8 +16,8 @@ int listen_fd;
 
 void server_exit()
 {
+    printf("Closing server socket\n");
     close(listen_fd);
-    
     exit(0);
 }
 
@@ -29,6 +29,8 @@ void init_server(int p, int queue_len)
     signal(SIGTERM, server_exit);
     signal(SIGABRT, server_exit);
     signal(SIGINT, server_exit);
+    signal(SIGQUIT, server_exit);
+    signal(SIGTSTP, server_exit);
 }
 
 void process_requests()

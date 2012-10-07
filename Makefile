@@ -3,7 +3,7 @@ LD	= gcc
 CFLAGS 	= -Wall -O3
 LDLIBS	= -pthread
 TARGET 	= webserver
-SRCS 	= main.c server.c http_request.c http_response.c socket_ops.c buffer.c
+SRCS 	= main.c server.c http_request.c http_response.c buffer.c
 OBJS 	= ${SRCS:.c=.o}
 DEPS 	= ${SRCS:.c=.d}
 

@@ -44,7 +44,10 @@ int buffer_append(struct buffer *buf, char *data, int len)
         buf->max = new_max;
     }
     else
+    {
         memcpy(buf->data + buf->len, data, len);
+	buf->len = new_len;
+    }
 
     return 1;
 }
