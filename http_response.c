@@ -37,22 +37,3 @@ void send_response(int request_fd, struct http_request *http_req)
     write(request_fd, CRLF, sizeof(CRLF) - 1);
     write(request_fd, entity_body, sizeof(entity_body) - 1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
