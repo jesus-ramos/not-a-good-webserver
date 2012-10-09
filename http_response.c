@@ -2,23 +2,15 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "buffer.h"
 #include "http_response.h"
 
-const char *content_type_text[] =
+void write_response(int request_fd, struct http_response *resp)
 {
-    [CT_HTML]   = "text/html",
-    [CT_JPEG]   = "image/jpeg",
-    [CT_GIF]    = "image/gif",
-    [CT_PNG]    = "image/png",
-    [CT_STREAM] = "application/octet-stream"
-};
+    struct buffer buf;
 
-const char *request_status_text[] =
-{
-    [OK]	      = "200 OK",
-    [NOT_FOUND]       = "404 Not Found",
-    [NOT_IMPLEMENTED] = "501 Not Implemented"
-};
+    init_buffer(&buf);
+}
 
 void send_response(int request_fd, struct http_request *http_req)
 {

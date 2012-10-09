@@ -1,35 +1,17 @@
 #ifndef _HTTP_REQUEST_H
 #define _HTTP_REQUEST_H
 
-enum request_type
-{
-    GET,
-    POST,
-    HEAD,
-    PUT,
-    DELETE,
-    TRACE,
-    OPTIONS,
-    CONNECT,
-    PATCH,
-    INVALID
-};
-
-struct request_type_entry
-{
-    enum request_type request_type;
-    char *str;
-};
-
-extern struct request_type_entry request_types[];
+#include "http_header.h"
 
 struct http_request
 {
-    enum request_type request_type;
-    char *file_name;
-};
+    enum request_type request;
+    enum connection_type connection_type;
+    enum http_version http_version;
 
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+    char *file_name;
+    char *host;
+};
 
 void process_request(int request_fd);
 

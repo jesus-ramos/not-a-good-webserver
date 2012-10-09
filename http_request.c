@@ -1,7 +1,6 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -11,33 +10,7 @@
 #include "http_request.h"
 #include "http_response.h"
 
-#define REQUEST_ENTRY(req_type) { req_type, #req_type }
-
 #define REQ_WAIT_TIME 2
-
-struct request_type_entry request_types[] =
-{
-    REQUEST_ENTRY(GET),
-    REQUEST_ENTRY(POST),
-    REQUEST_ENTRY(HEAD),
-    REQUEST_ENTRY(PUT),
-    REQUEST_ENTRY(DELETE),
-    REQUEST_ENTRY(TRACE),
-    REQUEST_ENTRY(OPTIONS),
-    REQUEST_ENTRY(CONNECT),
-    REQUEST_ENTRY(PATCH),
-};
-
-static enum request_type get_request_type(char *rq)
-{
-    int i;
-
-    for (i = 0; i < ARRAY_SIZE(request_types); i++)
-	if (!strcmp(rq, request_types[i].str))
-	    return request_types[i].request_type;
-
-    return INVALID;
-}
 
 static void free_http_request(struct http_request *http_req)
 {
