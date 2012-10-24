@@ -45,7 +45,8 @@ enum request_status
 {
     OK,
     NOT_FOUND,
-    NOT_IMPLEMENTED
+    NOT_IMPLEMENTED,
+    TEAPOT
 };
 
 struct request_type_entry

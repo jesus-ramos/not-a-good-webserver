@@ -5,7 +5,7 @@
 const char *connection_type_text[] =
 {
     [KEEP_ALIVE] = "keep-alive",
-    [CLOSE]	 = "close"
+    [CLOSE]      = "close"
 };
 
 const char *http_version_text[] =
@@ -25,9 +25,10 @@ const char *content_type_text[] =
 
 const char *request_status_text[] =
 {
-    [OK]	      = "200 OK",
+    [OK]              = "200 OK",
     [NOT_FOUND]       = "404 Not Found",
-    [NOT_IMPLEMENTED] = "501 Not Implemented"
+    [NOT_IMPLEMENTED] = "501 Not Implemented",
+    [TEAPOT]          = "418 I'm a teapot"
 };
 
 #define REQUEST_ENTRY(req_type) { req_type, #req_type }
@@ -52,8 +53,8 @@ enum request_type get_request_type(char *rq)
     int i;
 
     for (i = 0; i < ARRAY_SIZE(request_types); i++)
-	if (!strcmp(rq, request_types[i].str))
-	    return request_types[i].request_type;
+        if (!strcmp(rq, request_types[i].str))
+            return request_types[i].request_type;
 
     return INVALID;
 }

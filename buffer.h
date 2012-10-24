@@ -12,7 +12,8 @@ struct buffer
 };
 
 int init_buffer(struct buffer *buf);
-void free_buffer(struct buffer *buf);
-int buffer_append(struct buffer *buf, char *data, int len);
+int reset_buffer(struct buffer *buf);
+int buffer_append(struct buffer *buf, const char *data, int len);
+const char *buffer_getline(struct buffer *line_buf, const char *data);
 
 #endif /* _BUFFER_H */

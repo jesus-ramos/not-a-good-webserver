@@ -5,24 +5,17 @@
 #include "buffer.h"
 #include "http_response.h"
 
-void write_response(int request_fd, struct http_response *resp)
-{
-    struct buffer buf;
-
-    init_buffer(&buf);
-}
-
 void send_response(int request_fd, struct http_request *http_req)
 {
-    const char status_line[] = "HTTP/1.1 501 Not Implemented\r\n";
+    const char status_line[] = "HTTP/1.1 418 I'm a teapot\r\n";
     const char content_type_line[] = "Content-type: text/html\r\n";
     const char entity_body[] = "<html>"
-	"<head><title>WebServer Feature Not Implemented</title></head>"
-	"<body>This web server does not support the requested feature</body>"
-	"</html>";
+        "<head><title>WebServer Feature Not Implemented</title></head>"
+        "<body>This web server does not support the requested feature</body>"
+        "</html>";
 
     if (!http_req)
-	return;
+        return;
 
     write(request_fd, status_line, sizeof(status_line) - 1);
     write(request_fd, content_type_line, sizeof(content_type_line) - 1);
