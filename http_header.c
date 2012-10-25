@@ -27,8 +27,8 @@ const char *request_status_text[] =
 {
     [OK]              = "200 OK",
     [NOT_FOUND]       = "404 Not Found",
-    [NOT_IMPLEMENTED] = "501 Not Implemented",
-    [TEAPOT]          = "418 I'm a teapot"
+    [TEAPOT]          = "418 I'm a teapot",
+    [NOT_IMPLEMENTED] = "501 Not Implemented"
 };
 
 #define REQUEST_ENTRY(req_type) { req_type, #req_type }
@@ -43,7 +43,7 @@ struct request_type_entry request_types[] =
     REQUEST_ENTRY(TRACE),
     REQUEST_ENTRY(OPTIONS),
     REQUEST_ENTRY(CONNECT),
-    REQUEST_ENTRY(PATCH),
+    REQUEST_ENTRY(PATCH)
 };
 
 #undef REQUEST_ENTRY

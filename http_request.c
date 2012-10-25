@@ -53,9 +53,22 @@ static int read_request_from_socket(int request_fd, struct buffer *buf)
     return 1;
 }
 
-static void parse_request_line(const char *line, struct http_request *req)
+static void parse_request_line(char *line, struct http_request *req)
 {
-    /* TODO */
+    char *tok;
+    int len;
+    char *tmp;
+
+    tok = strtok(line, " ");
+    if ((req->request = get_request_type(tok)) != GET)
+        return;
+
+    tok = strtok(NULL, " ");
+    len = strlen(tok);
+    if (!(tmp = malloc(len + 1)))
+        return;
+    req->file_name = tmp;
+    strcpy(req->file_name, tok);
 }
 
 static struct http_request *parse_request(int request_fd)
@@ -82,6 +95,8 @@ static struct http_request *parse_request(int request_fd)
     parse_request_line(line_buf.data, http_req);
     if (http_req->request == INVALID)
         goto out;
+
+    /* TODO: parse remaining lines in request */
 
 out:
     free(buf.data);
