@@ -17,7 +17,8 @@ enum request_type
     OPTIONS,
     CONNECT,
     PATCH,
-    INVALID
+    INVALID,
+    NUM_REQUEST_TYPES
 };
 
 enum connection_type

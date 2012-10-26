@@ -45,8 +45,8 @@ static int read_request_from_socket(int request_fd, struct buffer *buf)
             return 0;
         if (!buffer_append(buf, mini_buf, bytes_read))
             return 0;
-        if (buf->len >= 4 && !strncmp((const char *)&buf->data[buf->len - 4],
-                                      EOR, 4))
+        if (buf->len >= 4 &&
+            !strncmp((const char *)&buf->data[buf->len - 4], EOR, 4))
             return 1;
     } while (bytes_read);
 
