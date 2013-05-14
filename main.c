@@ -10,8 +10,8 @@ int main(int argc, char **argv)
 
     if (argc != 3)
     {
-	printf("Usage: webserver <port #> <request queue length>\n");
-	return 1;
+        printf("Usage: webserver <port #> <request queue length>\n");
+        return 1;
     }
 
     port = atoi(argv[1]);

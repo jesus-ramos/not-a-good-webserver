@@ -21,14 +21,14 @@ int reset_buffer(struct buffer *buf)
     return init_buffer(buf);
 }
 
-int buffer_append(struct buffer *buf, const char *data, int len)
+int buffer_append(struct buffer *buf, const char *data, unsigned int len)
 {
     char *tmp;
-    int new_len;
-    int new_max;
+    unsigned int new_len;
+    unsigned int new_max;
 
     new_len = buf->len + len;
-    if (new_len > SSIZE_MAX)
+    if (new_len > buf->len)
     {
         fprintf(stderr, "Maxmimum buffer size exceeded\n");
         return 0;

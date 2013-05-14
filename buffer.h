@@ -6,14 +6,14 @@
 
 struct buffer
 {
-    int len;
-    int max;
+    unsigned int len;
+    unsigned int max;
     char *data;
 };
 
 int init_buffer(struct buffer *buf);
 int reset_buffer(struct buffer *buf);
-int buffer_append(struct buffer *buf, const char *data, int len);
+int buffer_append(struct buffer *buf, const char *data, unsigned int len);
 const char *buffer_getline(struct buffer *line_buf, const char *data);
 
 #endif /* _BUFFER_H */
