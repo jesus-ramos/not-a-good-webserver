@@ -28,7 +28,7 @@ int buffer_append(struct buffer *buf, const char *data, unsigned int len)
     unsigned int new_max;
 
     new_len = buf->len + len;
-    if (new_len > buf->len)
+    if (new_len < buf->len)
     {
         fprintf(stderr, "Maxmimum buffer size exceeded\n");
         return 0;

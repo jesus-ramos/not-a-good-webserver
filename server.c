@@ -10,9 +10,9 @@
 #include "http_request.h"
 #include "server.h"
 
-int port;
-int queue_length;
-int listen_fd;
+static int port;
+static int queue_length;
+static int listen_fd;
 
 void server_exit()
 {
@@ -23,20 +23,16 @@ void server_exit()
 
 void init_server(int p, int queue_len)
 {
+    struct sockaddr_in server_addr;
+
     port = p;
     queue_length = queue_len;
 
     signal(SIGTERM, server_exit);
     signal(SIGABRT, server_exit);
-    signal(SIGINT, server_exit);
+    signal(SIGINT,  server_exit);
     signal(SIGQUIT, server_exit);
     signal(SIGTSTP, server_exit);
-}
-
-void process_requests()
-{
-    int request_fd;
-    struct sockaddr_in server_addr;
 
     if ((listen_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
@@ -45,8 +41,8 @@ void process_requests()
     }
     memset(&server_addr, 0, sizeof(struct sockaddr_in));
 
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port);
+    server_addr.sin_family      = AF_INET;
+    server_addr.sin_port        = htons(port);
     server_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
     if (bind(listen_fd, (struct sockaddr *)&server_addr,
@@ -60,11 +56,15 @@ void process_requests()
         perror("listen");
         return;
     }
+}
+
+void process_requests()
+{
+    int request_fd;
 
     while (1)
     {
-        if ((request_fd = accept(listen_fd,
-                                 (struct sockaddr *)NULL, NULL)) == -1)
+        if ((request_fd = accept(listen_fd, NULL, NULL)) == -1)
         {
             perror("accept");
             continue;
